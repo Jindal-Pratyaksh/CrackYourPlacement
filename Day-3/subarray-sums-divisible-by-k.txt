@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int subarraysDivByK(vector<int>& nums, int k) {
+        int n=nums.size();
+        int ans=0;
+        map<int,int> mp;
+        int sum=0;
+        mp[0]++;
+        for(int i=0;i<n;i++){
+            sum+=nums[i];
+            int mod=sum%k;
+            if(mod<0) mod+=k;
+            mp[mod]++;
+        }
+
+        for(auto i:mp){
+            ans+=((i.second)*(i.second-1)/2);
+        }
+        cout<<-1%2;
+        return ans;
+
+
+    }
+};
