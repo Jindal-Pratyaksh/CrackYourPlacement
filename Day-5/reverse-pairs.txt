@@ -1,0 +1,53 @@
+class Solution {
+public:
+    int cnt=0;
+    void merge(vector<int> &nums, int s, int mid, int e){
+        vector<int> arr1(mid-s+1);
+        vector<int> arr2(e-mid);
+
+        for(int i=0;i<mid-s+1;i++){
+            arr1[i]=nums[s+i];
+        }
+        for(int i=0;i<e-mid;i++){
+            arr2[i]=nums[mid+i+1];
+        }
+
+        int i=0,j=0;
+        int k=s;
+
+        while(i<arr1.size() && j<arr2.size()){
+            if(arr1[i]<arr2[j]){
+                nums[k++]=arr1[i++];
+            }
+            else{
+                nums[k++]=arr2[j++];
+            }
+        }
+
+        while(i<arr1.size()) nums[k++]=arr1[i++];
+        while(j<arr2.size()) nums[k++]=arr2[j++];
+    }
+
+    void countPairs(vector<int> &nums, int s,int mid, int e){
+        int r=mid+1;
+        for(int i=s;i<=mid;i++){
+            while(r<=e && (long long)nums[i] > (long long)(2*(long long)nums[r])){
+                r++;
+            }
+            cnt+=r-(mid+1);
+        }
+    }
+    void mergeSort(vector<int> &nums,int s,int e){
+        if(s>=e) return;
+        
+        int mid= s+(e-s)/2;
+        mergeSort(nums,s,mid);
+        mergeSort(nums,mid+1,e);
+        countPairs(nums,s,mid,e);
+        merge(nums,s,mid,e);
+    }
+    int reversePairs(vector<int>& nums) {
+        mergeSort(nums,0,nums.size()-1);
+        return cnt;
+    }
+};
